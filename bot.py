@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 import sqlite3
 import os
@@ -22,14 +21,13 @@ from telegram.ext import (
     filters,
 )
 
-# ===== Load .env variables =====
 from dotenv import load_dotenv
-load_dotenv()  # loads BOT_TOKEN and CHANNEL_ID if present
+load_dotenv()  
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 CHANNEL_ID = os.environ.get("CHANNEL_ID")
 if CHANNEL_ID:
-    CHANNEL_ID = int(CHANNEL_ID)  # convert to int if provided
+    CHANNEL_ID = int(CHANNEL_ID) 
 
 REQUIRED_HASHTAG = "#Lesson_of_the_day"
 DB_PATH = "lessons.db"
@@ -37,14 +35,12 @@ MAX_KEEP = None
 APP_TZ = ZoneInfo("Africa/Addis_Ababa")
 MAX_MSG_LEN = 4096
 
-# ===== Logging =====
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(name)s: %(message)s",
     level=logging.INFO,
 )
 log = logging.getLogger("lessonbot")
 
-# ===== Database setup =====
 conn = sqlite3.connect(DB_PATH, check_same_thread=False)
 cur = conn.cursor()
 
@@ -69,7 +65,6 @@ CREATE TABLE IF NOT EXISTS bookmarks (
 """)
 conn.commit()
 
-# ===== Helper Functions =====
 def save_lesson(*, text: str, source: str, channel_id: Optional[int] = None,
                 message_id: Optional[int] = None, created_at: Optional[str] = None):
     cur.execute(
@@ -220,7 +215,6 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for lesson_id, text, created_at in rows[:5]:
             await send_formatted_lesson(update.effective_chat.id, lesson_id, user_id, context)
     else:
-        # Check if date
         import re
         date_pattern = r'^\d{4}-\d{2}-\d{2}$'
         if re.match(date_pattern, text):
@@ -294,7 +288,6 @@ async def on_channel_post(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     message_id=msg.message_id, created_at=msg.date.isoformat())
         log.info("Saved lesson from channel")
 
-# ===== Main =====
 def main():
     if not BOT_TOKEN:
         log.error("BOT_TOKEN not found in environment variables. Add it to your .env or PythonAnywhere environment.")
@@ -309,3 +302,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
