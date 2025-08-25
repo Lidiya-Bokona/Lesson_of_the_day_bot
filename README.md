@@ -29,7 +29,7 @@ Start using the bot on Telegram: [@lesson_of_day_bot](https://t.me/lesson_of_day
 ## ⚙️ Installation (Development)
 
 1. Clone the repo:  
-git clone https://github.com/yourusername/lesson-of-the-day-bot.git
+git clone https://github.com/lidiya-bokona/lesson-of-the-day-bot.git
 cd lesson-of-the-day-bot
 
 2. Create a virtual environment:
